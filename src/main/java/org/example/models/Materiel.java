@@ -1,7 +1,10 @@
 package org.example.models;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 
+@Getter
 public final class Materiel extends Possession {
     private final Double tauxDAppreciation;
     private final LocalDate dateDAcquisition;
@@ -24,11 +27,23 @@ public final class Materiel extends Possession {
         }
 
 
-        Double valeurFuture = this.getValeur().getMontant() - (this.getValeur().getMontant() * (Math.pow((this.tauxDAppreciation / 100), differenceDeDate)));
+        Double valeurFuture = this.getValeur().getMontant() * Math.pow((1 - this.getTauxDAppreciation() / 100), differenceDeDate);
 
         return new Materiel(this.getNomDeLaPossession(),
                 dateFuture,
                 new Argent(valeurFuture, this.getValeur().getDevise()),
                 this.tauxDAppreciation, this.dateDAcquisition);
+    }
+
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.of(2030, 1, 1);
+        LocalDate dateDe = LocalDate.of(2025, 1, 1);
+        Materiel tshirt = new Materiel("t-shirt",
+                dateDe,
+                new Argent(20000d, Devise.ARIARY),
+                20d,
+                LocalDate.of(2025, 1, 1));
+
+        System.out.println(tshirt.projectionFuture(date));
     }
 }
