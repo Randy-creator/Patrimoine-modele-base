@@ -12,14 +12,14 @@ public final class TrainDeVie extends Possession {
     public Possession projectionFuture(LocalDate dateFuture) {
         if (dateFuture.isBefore(this.getADateDe())) {
             return new TrainDeVie(
-                    this.getNomDeLaPossession(),
+                    nom,
                     this.getADateDe(),
                     new Argent(0d, this.getValeur().getDevise())
             );
         }
 
 
-        return new TrainDeVie(this.getNomDeLaPossession(),
+        return new TrainDeVie(nom,
                 this.getADateDe(),
                 new Argent(this.getValeur().getMontant(),
                         this.getValeur().getDevise()));
