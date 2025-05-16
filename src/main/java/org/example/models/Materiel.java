@@ -1,50 +1,50 @@
 package org.example.models;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 
+@Getter
 public final class Materiel extends Possession {
     private final Double tauxDAppreciation;
     private final LocalDate dateDAcquisition;
 
-    public Materiel(String nomDeLaPossession, LocalDate aDateDe, Argent valeur, Double tauxDAppreciation, LocalDate dateDAcquisition) {
-        super(nomDeLaPossession, aDateDe, valeur);
+    public Materiel(String nom, LocalDate aDateDe, Argent valeur, Double tauxDAppreciation, LocalDate dateDAcquisition) {
+        super(nom, aDateDe, valeur);
         this.tauxDAppreciation = tauxDAppreciation;
         this.dateDAcquisition = dateDAcquisition;
     }
 
     @Override
-    public Possession projectionFuture(LocalDate dateFuture) {
-        int differenceDeDate = dateFuture.getYear() - this.dateDAcquisition.getYear();
-
-        if (differenceDeDate < 0) {
-            return
-                    new Materiel(this.getNomDeLaPossession(),
-                            dateFuture,
-                            new Argent(0d, Devise.US_DOLLAR),
-                            this.tauxDAppreciation,
-                            this.dateDAcquisition);
-        }
-        Materiel materiel = null;
-
-        while (differenceDeDate > 0) {
-            Double valeurActuelle = this.getValeur().getMontant() * 1 - (this.tauxDAppreciation / 100);
-
-            materiel = new Materiel(this.getNomDeLaPossession(),
-                    dateFuture,
-                    new Argent(valeurActuelle, Devise.US_DOLLAR),
+    public Materiel projectionFuture(LocalDate dateFuture) {
+        if (dateFuture.isBefore(dateDAcquisition)) {
+            return new Materiel(nom
+                    , dateFuture, new Argent(0d, this.getValeur().getDevise()),
                     this.tauxDAppreciation,
                     this.dateDAcquisition);
         }
-        return materiel;
+
+        int anneeEcoulee = dateFuture.getYear() - this.dateDAcquisition.getYear();
+
+        double facteurDAmortissementAnnuel = Math.pow((1 - this.getTauxDAppreciation()), anneeEcoulee);
+
+        Argent valeurFuture = valeur.multiplier(facteurDAmortissementAnnuel);
+
+        return new Materiel(nom,
+                dateFuture,
+                valeurFuture,
+                this.tauxDAppreciation, this.dateDAcquisition);
     }
 
     public static void main(String[] args) {
-        Materiel tshirt = new Materiel("t-shirt"
-                , LocalDate.of(2026, 01, 01),
+        LocalDate date = LocalDate.of(2030, 1, 1);
+        LocalDate dateDe = LocalDate.of(2025, 1, 1);
+        Materiel tshirt = new Materiel("t-shirt",
+                dateDe,
                 new Argent(20000d, Devise.ARIARY),
                 20d,
-                LocalDate.of(2025, 01, 01));
+                LocalDate.of(2025, 1, 1));
 
-        System.out.println(tshirt);
+        System.out.println(tshirt.projectionFuture(date));
     }
 }
