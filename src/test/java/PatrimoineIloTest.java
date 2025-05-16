@@ -43,10 +43,5 @@ public class PatrimoineIloTest {
                 new Argent(1_000_000d, Devise.ARIARY),
                 20d,
                 LocalDate.of(2024, Month.JANUARY, 1));
-
-        TrainDeVie trainDeVie = new TrainDeVie("train de vie",
-                aDateDe,
-                new Argent(500_000d, Devise.ARIARY));
-
     }
 }
