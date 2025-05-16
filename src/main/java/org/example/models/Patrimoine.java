@@ -12,6 +12,6 @@ public class Patrimoine {
     private final Set<Possession> possessions;
 
     public Double projectionFuture(LocalDate dateFuture) {
-
+        return possessions.stream().mapToDouble(possession -> possession.getValeur().getMontant()).sum();
     }
 }

@@ -10,7 +10,18 @@ public final class TrainDeVie extends Possession {
 
     @Override
     public Possession projectionFuture(LocalDate dateFuture) {
-        Double totale = 0.0;
-        return null;
+        if (dateFuture.isBefore(this.getADateDe())) {
+            return new TrainDeVie(
+                    this.getNomDeLaPossession(),
+                    this.getADateDe(),
+                    new Argent(0d, this.getValeur().getDevise())
+            );
+        }
+
+
+        return new TrainDeVie(this.getNomDeLaPossession(),
+                this.getADateDe(),
+                new Argent(this.getValeur().getMontant(),
+                        this.getValeur().getDevise()));
     }
 }
