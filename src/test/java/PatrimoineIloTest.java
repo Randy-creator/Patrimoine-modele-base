@@ -16,20 +16,20 @@ public class PatrimoineIloTest {
         Personne ilo = new Personne("ilo");
         Patrimoine patrimoineDeIlo = new Patrimoine(ilo, LocalDate.of(2024, Month.JUNE, 26), Set.of());
         LocalDate aDateDe = LocalDate.of(2024, 5, 13);
-
-        Compte espece = new Compte("espece",
-                aDateDe,
-                new Argent(400_000d, Devise.ARIARY));
-
-
-        Compte compteEpargne = new Compte("compte epargne"
-                , aDateDe,
-                new Argent(200_000d, Devise.ARIARY));
-
-
-        Compte compteCourant = new Compte("compte courant",
-                aDateDe,
-                new Argent(600_000d, Devise.ARIARY));
+//
+//        Compte espece = new Compte("espece",
+//                aDateDe,
+//                new Argent(400_000d, Devise.ARIARY));
+//
+//
+//        Compte compteEpargne = new Compte("compte epargne"
+//                , aDateDe,
+//                new Argent(200_000d, Devise.ARIARY));
+//
+//
+//        Compte compteCourant = new Compte("compte courant",
+//                aDateDe,
+//                new Argent(600_000d, Devise.ARIARY));
 
 
         Materiel ordinateur = new Materiel("ordinateur",
