@@ -24,9 +24,9 @@ public class TrainDeVieTest {
                 LocalDate.of(2024, 5, 13));
 
         var actual = trainDeVie.projectionFuture(LocalDate.of(2024,
-                6,
+                7,
                 26));
 
-        assertEquals(100_000d, actual.getFinanceur().getValeur().getMontant());
+        assertEquals(1_000_000d, actual.getValeur().getMontant());
     }
 }

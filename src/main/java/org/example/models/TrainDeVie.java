@@ -33,32 +33,20 @@ public final class TrainDeVie extends Possession {
             );
         }
 
-        long moisEcoulee = MONTHS.between(debutDeLaPonction, dateFuture);
+        long nombreDOperation = debutDeLaPonction
+                .datesUntil(dateFuture.plusDays(1))
+                .filter(date ->
+                date.getDayOfMonth() == jourDOperation
+                ).count();
 
-        if (dateFuture.getDayOfMonth() >= jourDOperation) {
-            Argent valeurRestante = financeur.getValeur()
-                    .soustraire(valeur.multiplier(moisEcoulee));
+        Argent argentFuture = valeur.multiplier(nombreDOperation);
 
-            Compte financeurFuture = new Compte(financeur.nom, dateFuture, valeurRestante);
-
-            return new TrainDeVie(nom,
-                    aDateDe,
-                    financeur.valeur,
-                    financeurFuture,
-                    jourDOperation,
-                    debutDeLaPonction);
-        } else {
-            Argent valeurRestante = financeur.getValeur()
-                    .soustraire(valeur.multiplier(moisEcoulee - 1));
-
-            Compte financeurFuture = new Compte(financeur.nom, dateFuture, valeurRestante);
-
-            return new TrainDeVie(nom
-                    , aDateDe
-                    , valeurRestante
-                    , financeurFuture,
-                    jourDOperation,
-                    debutDeLaPonction);
-        }
+        return new TrainDeVie(
+                nom,
+                dateFuture,
+                argentFuture,
+                financeur,
+                jourDOperation,
+                debutDeLaPonction);
     }
 }
