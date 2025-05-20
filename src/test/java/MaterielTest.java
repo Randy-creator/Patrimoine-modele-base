@@ -28,6 +28,6 @@ public class MaterielTest {
         ));
 
         assertEquals(1_800_000d, ordinateur1Jan22.getValeur().getMontant());
-        assertEquals(1_620_000d, ordinateur1Jan23.getValeur().getMontant());
+        assertEquals(1_600_000d, ordinateur1Jan23.getValeur().getMontant());
     }
 }

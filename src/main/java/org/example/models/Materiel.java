@@ -26,25 +26,13 @@ public final class Materiel extends Possession {
 
         int anneeEcoulee = dateFuture.getYear() - this.dateDAcquisition.getYear();
 
-        double facteurDAmortissementAnnuel = Math.pow((1 - this.getTauxDAppreciation()), anneeEcoulee);
+        Argent valeurDeLAmortissement = valeur.multiplier(tauxDAppreciation);
 
-        Argent valeurFuture = valeur.multiplier(facteurDAmortissementAnnuel);
+        Argent valeurFuture = valeur.soustraire(valeurDeLAmortissement.multiplier(anneeEcoulee));
 
         return new Materiel(nom,
                 dateFuture,
                 valeurFuture,
                 this.tauxDAppreciation, this.dateDAcquisition);
-    }
-
-    public static void main(String[] args) {
-        LocalDate date = LocalDate.of(2030, 1, 1);
-        LocalDate dateDe = LocalDate.of(2025, 1, 1);
-        Materiel tshirt = new Materiel("t-shirt",
-                dateDe,
-                new Argent(20000d, Devise.ARIARY),
-                20d,
-                LocalDate.of(2025, 1, 1));
-
-        System.out.println(tshirt.projectionFuture(date));
     }
 }

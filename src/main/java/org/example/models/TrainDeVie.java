@@ -2,9 +2,7 @@ package org.example.models;
 
 import lombok.Getter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Month;
 
 import static java.time.temporal.ChronoUnit.MONTHS;
 import static org.example.models.Argent.ariary;
@@ -38,9 +36,29 @@ public final class TrainDeVie extends Possession {
         long moisEcoulee = MONTHS.between(debutDeLaPonction, dateFuture);
 
         if (dateFuture.getDayOfMonth() >= jourDOperation) {
-            Argent valeurFuture = financeur.getValeur()
+            Argent valeurRestante = financeur.getValeur()
                     .soustraire(valeur.multiplier(moisEcoulee));
+
+            Compte financeurFuture = new Compte(financeur.nom, dateFuture, valeurRestante);
+
+            return new TrainDeVie(nom,
+                    aDateDe,
+                    financeur.valeur,
+                    financeurFuture,
+                    jourDOperation,
+                    debutDeLaPonction);
+        } else {
+            Argent valeurRestante = financeur.getValeur()
+                    .soustraire(valeur.multiplier(moisEcoulee - 1));
+
+            Compte financeurFuture = new Compte(financeur.nom, dateFuture, valeurRestante);
+
+            return new TrainDeVie(nom
+                    , aDateDe
+                    , valeurRestante
+                    , financeurFuture,
+                    jourDOperation,
+                    debutDeLaPonction);
         }
-        return null;
     }
 }
