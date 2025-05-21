@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class Patrimoine {
@@ -11,8 +12,11 @@ public class Patrimoine {
     private final LocalDate date;
     private final Set<Possession> possessions;
 
-    public Double projectionFuture(LocalDate dateFuture) {
-        return possessions.stream().mapToDouble(possession ->
-                possession.getValeur().getMontant()).sum();
+    public Patrimoine projectionFuture(LocalDate dateFuture) {
+        Set<Possession> possessionFuture = possessions.stream().map(
+                possession -> possession.projectionFuture(dateFuture)
+        ).collect(Collectors.toSet());
+
+        return new Patrimoine(proprietaire, dateFuture, possessionFuture);
     }
 }
