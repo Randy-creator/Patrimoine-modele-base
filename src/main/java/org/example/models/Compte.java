@@ -2,6 +2,7 @@ package org.example.models;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.example.models.Argent.ariary;
@@ -35,18 +36,24 @@ public final class Compte extends Possession {
                     );
         }
 
-        Argent sommeTotaleTrainDeVie = trainDeVies.stream()
-                .map(trainDeVie ->
-                trainDeVie.projectionFuture(dateFuture).valeur
-                ).reduce(ariary(0), Argent::additionner);
-
+        Argent financementFutur = calculerFinancementFutur(dateFuture);
         return  new Compte(
                 nom,
                 dateFuture,
-                valeur.soustraire(sommeTotaleTrainDeVie),
+                valeur.soustraire(financementFutur),
                 dateDeCreation,
                 this.trainDeVies
         );
+    }
+
+    private Argent calculerFinancementFutur(LocalDate dateFuture) {
+        Argent acc = ariary(0);
+        Iterator<TrainDeVie> iterator = trainDeVies.iterator();
+        while(iterator.hasNext()) {
+            Argent valeur1 = iterator.next().projectionFuture(dateFuture).valeur;
+            acc = acc.additionner(valeur1);
+        }
+        return acc;
     }
 
     public void financer(TrainDeVie trainDeVie) {
